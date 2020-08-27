@@ -4861,7 +4861,6 @@ function exportSVG(fname) {
           .attr("class", function(d) { return "stars" + starColor(d.properties.bv); })
           .attr("d", function(d) { return d3.svg.customSymbol().type("star").size((d.properties ? starSize(d.properties.mag) : 1))(); })
           .attr("d", map.pointRadius( function(d) { return d.properties ? starSize(d.properties.mag) : 1; }));
-          // .attr("transform", function(d) { return point(d.geometry.coordinates); })
 
         styles.stars = svgStyle(cfg.stars.style);
         var range = bvcolor.domain();
