@@ -2082,6 +2082,32 @@ Canvas.symbol = function () {
       ctx.closePath();
       return r;
     },
+    "star": function(ctx) {
+      var rot = Math.PI / 2 * 3;
+      var x = 75;
+      var y = 100;
+      var step = Math.PI / spikes;
+
+      var s = Math.sqrt(size()), 
+          r = s/2;
+
+      ctx.beginPath();
+      ctx.moveTo(75, 100 - 30)
+      for (i = 0; i < spikes; i++) {
+          x = 75 + Math.cos(rot) * 30;
+          y = 100 + Math.sin(rot) * 30;
+          ctx.lineTo(x, y)
+          rot += step
+
+          x = 75 + Math.cos(rot) * 15;
+          y = 100 + Math.sin(rot) * 15;
+          ctx.lineTo(x, y)
+          rot += step
+      }
+      ctx.lineTo(75, 100 - 30)
+      ctx.closePath();
+      return r;
+    },
     "triangle": function(ctx) {
       var s = Math.sqrt(size()), 
           r = s/Math.sqrt(3);
@@ -4826,16 +4852,16 @@ function exportSVG(fname) {
         if (error) callback(error);
 
         var cons = getData(json, cfg.transform);
-        
+
         groups.stars.selectAll(".stars")
           .data(cons.features.filter( function(d) {
             return d.properties.mag <= cfg.stars.limit; 
           }))
           .enter().append("path")
           .attr("class", function(d) { return "stars" + starColor(d.properties.bv); })
-          .attr("d", map.pointRadius( function(d) {
-            return d.properties ? starSize(d.properties.mag) : 1;
-          }));
+          .attr("d", function(d) { return d3.svg.customSymbol().type("star").size((d.properties ? starSize(d.properties.mag) : 1))(); })
+          .attr("d", map.pointRadius( function(d) { return d.properties ? starSize(d.properties.mag) : 1; }));
+          // .attr("transform", function(d) { return point(d.geometry.coordinates); })
 
         styles.stars = svgStyle(cfg.stars.style);
         var range = bvcolor.domain();
@@ -5361,6 +5387,21 @@ var customSvgSymbols = d3.map({
     ' M' + (-r) + ' 0 h ' + (s) + 
     ' M 0 ' + (-r) + ' v ' + (s);
         
+  },
+  'star': function(size, ratio) {
+    return 'M 0.000 4.000' +
+      'M 0.000 2.000' +
+      'L 2.351 3.236' +
+      'L 1.902 0.618' +
+      'L 3.804 -1.236' +
+      'L 1.176 -1.618' +
+      'L 0.000 -4.000' +
+      'L -1.176 -1.618' +
+      'L -3.804 -1.236' +
+      'L -1.902 0.618' +
+      'L -2.351 3.236' +
+      'L 0.000 2.000' +
+      'z'
   },
   'stroke-circle': function(size, ratio) {
     var s = Math.sqrt(size), 
