@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>D3-Celestial Starmap</title>
+  <script type="text/javascript" src="lib/d3.min.js"></script>
+  <script type="text/javascript" src="lib/d3.geo.projection.min.js"></script>
+  <script type="text/javascript" src="js/celestial.js"></script>
+  <link rel="stylesheet" href="css/celestial.css">
+</head>
+<body style="padding: 20px 40px;;">
+  <div style="overflow:hidden;"><div id="celestial-map" style="width: 700px;"></div>
+  <div style="font-size: 14px; margin-left:30px" id="error_reporting"></div>
+  <div style="margin: 5px 30px 20px 30px;"><input id="address_holder" style="width: 300px; padding-left:15px; height:35px;" placeholder="Enter Location"><span id="the_button"><button onclick="process_location()" style="background-color: #0066ff; color:#FFF; padding:9px 20px;;">Go!</button></span></div>
+  <div id="celestial-form"></div>
+
+  <script type="text/javascript">
+
+Celestial.display({
+  projection: "airy",  
+  transform: "equatorial", 
+  center: null,     
+  form: true,
+  formFields: {"location": true,  // Set visiblity for each group of fields with the respective id
+               "general": false,  
+               "stars": true,  
+               "dsos": false,  
+               "constellations": true,  
+               "lines": false,  
+               "other": false,  
+               "download": true},
+  datapath: "data/",
+  stars: {
+    show: true,    // Show stars
+    limit: 5.4,      // Show only stars brighter than limit magnitude
+    colors: false,  // Show stars in spectral colors, if not use default color
+    style: { fill: "#ffffff", opacity: 1 }, // Default style for stars
+    designation: false, // Show star names (Bayer, Flamsteed, Variable star, Gliese or designation, 
+                       // i.e. whichever of the previous applies first); may vary with culture setting
+    propername: false,   // Show proper name (if present)
+    size: 10,       // Maximum size (radius) of star circle in pixels
+    exponent: -0.28 // Scale exponent for star size, larger = more linear
+    
+  },
+  dsos: {
+    show: false,    // Show Deep Space Objects 
+    },
+  planets: {  //Show planet locations, if date-time is set
+    show: false,
+  },
+  constellations: {
+    names: false,      // Show constellation names 
+    lines: true,   // Show constellation lines, style below
+    lineStyle: { stroke: "#cccccc", width: 1, opacity: 0.8 }, 
+    bounds: false, // Show constellation boundaries, style below
+    boundStyle: { stroke: "#cccc00", width: 0.5, opacity: 0.8, dash: [2, 4] }
+  },  
+  mw: {
+    show: false,     // Show Milky Way as filled multi-polygon outlines 
+    style: { fill: "#ffffff", opacity: 0.15 }  // Style for MW layers
+  },
+  lines: {  // Display & styles for graticule & some planes
+    graticule: { show: false, stroke: "#cccccc", width: 0.6, opacity: 0.8,   
+      // grid values: "outline", "center", or [lat,...] specific position
+      lon: {pos: [""], fill: "#eee", font: "10px Helvetica, Arial, sans-serif"}, 
+      // grid values: "outline", "center", or [lon,...] specific position
+      lat: {pos: [""], fill: "#eee", font: "10px Helvetica, Arial, sans-serif"}},    
+    equatorial: { show: false, stroke: "#aaaaaa", width: 1.3, opacity: 0.7 },  
+    ecliptic: { show: false, stroke: "#66cc66", width: 1.3, opacity: 0.7 },     
+    galactic: { show: false, stroke: "#cc6666", width: 1.3, opacity: 0.7 },    
+    supergalactic: { false: false, stroke: "#cc66cc", width: 1.3, opacity: 0.7 }
+  },
+  background: {        // Background style
+    fill: "#555",   // Area fill
+    opacity: 1, 
+    stroke: "transparent", // Outline
+    width: 1.5
+  }, 
+
+
+});
+
+  </script>
+  
+  <script type="text/javascript" src="js/main.js"></script>
+
+  <footer id="d3-celestial-footer">
+    <p><a href="https://github.com/ofrohn/d3-celestial"><b>D3-Celestial</b></a> released under <a href="http://opensource.org/licenses/BSD-3-Clause">BSD license</a>. Copyright 2015-19 <a href="http://armchairastronautics.blogspot.com/" rel="author">Olaf Frohn</a>.</p>
+  </footer>
+</body>
+</html>
